@@ -6,6 +6,8 @@ CREATE TABLE "playlists"
     [Name] NVARCHAR(120)
 )
  */
+import com.k1.Parcial.application.request.Playlist.PlaylistRequestDto;
+import com.k1.Parcial.application.response.Playlist.PlaylistResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,4 +40,16 @@ public class Playlist {
             )
             private List<Track> tracks;
 
+            public Playlist(PlaylistRequestDto playlistRequestDto) {
+                this.name = playlistRequestDto.getName();
+            }
+
+            public PlaylistResponseDto toDto(){
+                return new PlaylistResponseDto(this);
+            }
+
+            public Playlist addTrack(Track track) {
+                this.tracks.add(track);
+                return this;
+            }
 }

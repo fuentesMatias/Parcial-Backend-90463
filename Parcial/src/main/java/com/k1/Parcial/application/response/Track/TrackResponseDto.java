@@ -1,5 +1,6 @@
 package com.k1.Parcial.application.response.Track;
 
+import com.k1.Parcial.infrastructure.entity.Playlist;
 import com.k1.Parcial.infrastructure.entity.Track;
 import lombok.AccessLevel;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class TrackResponseDto {
     private long milliseconds;
     private long bytes;
     private double unitPrice;
-    //private List<Long> playlists;
+    private List<?> playlists;
 
     public TrackResponseDto(Track track) {
         this.id = track.getId();
@@ -31,11 +32,9 @@ public class TrackResponseDto {
         this.milliseconds = track.getMilliseconds();
         this.bytes = track.getBytes();
         this.unitPrice = track.getUnitPrice();
-
-//        //Recorre la lista de playlists y agrega los id a la lista de playlists
-//        track.getPlaylists().forEach(playlist -> {
-//            this.playlists.add(playlist.getId());
-//        });
+        this.playlists = track.getPlaylists().stream()
+                .map(Playlist::getName)
+                .toList();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.k1.Parcial.domain.service.serviceInterfaces;
 
+import com.k1.Parcial.application.request.Playlist.PlaylistRequestDto;
 import com.k1.Parcial.infrastructure.entity.Playlist;
 
 import java.util.List;
@@ -12,8 +13,9 @@ public interface PlaylistService {
 
     void delete(Long id);
 
-    Optional<Playlist> update(Playlist entity);
+    Optional<Playlist> update(Long id,PlaylistRequestDto entity);
 
-    Playlist save(Playlist entity);
+    Playlist save(PlaylistRequestDto entity);
 
+    Playlist addTrackToPlaylist(Long idPlaylist, Long idTrack);
 }

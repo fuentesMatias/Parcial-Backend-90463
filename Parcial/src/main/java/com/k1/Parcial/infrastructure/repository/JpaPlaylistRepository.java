@@ -33,8 +33,9 @@ public class JpaPlaylistRepository implements PlaylistRepository {
         daoPlaylist.deleteById(id);
     }
     @Override
-    public Optional<Playlist> update(Playlist playlist) {
-        Optional<Playlist> playlistToUpdate = daoPlaylist.findById(playlist.getId());
+    public Optional<Playlist> update(Long id,Playlist playlist) {
+        Optional<Playlist> playlistToUpdate = daoPlaylist.findById(id);
+
         if (playlistToUpdate.isPresent()) {
             playlistToUpdate.get().setName(playlist.getName());
             daoPlaylist.save(playlistToUpdate.get());

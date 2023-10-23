@@ -1,11 +1,11 @@
 package com.k1.Parcial.domain.service.servicesImpl;
 
-import com.k1.Parcial.domain.repository.InvoiceRepository;
+import com.k1.Parcial.application.request.Playlist.PlaylistRequestDto;
 import com.k1.Parcial.domain.repository.PlaylistRepository;
-import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
 import com.k1.Parcial.domain.service.serviceInterfaces.PlaylistService;
-import com.k1.Parcial.infrastructure.entity.Invoice;
+import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
 import com.k1.Parcial.infrastructure.entity.Playlist;
+import com.k1.Parcial.infrastructure.entity.Track;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,9 +15,11 @@ import java.util.Optional;
 public class PlaylistServiceImpl implements PlaylistService {
 
     private final PlaylistRepository playlistRepository;
+    private final TrackService trackService;
 
-    public PlaylistServiceImpl(PlaylistRepository playlistRepository) {
+    public PlaylistServiceImpl(PlaylistRepository playlistRepository, TrackService trackService) {
         this.playlistRepository = playlistRepository;
+        this.trackService = trackService;
     }
 
     @Override
@@ -36,12 +38,26 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
-    public Optional<Playlist> update(Playlist playlist) {
-        return Optional.of(playlistRepository.update(playlist).orElseThrow());
+    public Optional<Playlist> update(Long id,PlaylistRequestDto playlistRequestDto) {
+
+        Playlist playlist = new Playlist(playlistRequestDto);
+
+
+        return Optional.of(playlistRepository.update(id,playlist).orElseThrow());
     }
 
     @Override
-    public Playlist save(Playlist playlist) {
+    public Playlist save(PlaylistRequestDto playlistDto) {
+
+        Playlist playlist = new Playlist(playlistDto);
+
         return playlistRepository.save(playlist);
+    }
+
+    @Override
+    public Playlist addTrackToPlaylist(Long idPlaylist, Long idTrack) {
+        Track track = trackService.getById(idTrack).orElseThrow();
+        Playlist playlist = playlistRepository.getById(idPlaylist).orElseThrow();
+        return  playlist.addTrack(track);
     }
 }

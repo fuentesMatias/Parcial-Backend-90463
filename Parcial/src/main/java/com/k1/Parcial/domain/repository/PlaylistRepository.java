@@ -1,5 +1,6 @@
 package com.k1.Parcial.domain.repository;
 
+import com.k1.Parcial.application.request.Playlist.PlaylistRequestDto;
 import com.k1.Parcial.infrastructure.entity.Playlist;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface PlaylistRepository {
 
     void delete(Long id);
 
-    Optional<Playlist> update(Playlist playlist);
+    Optional<Playlist> update(Long id,Playlist playlist);
 
     Playlist save(Playlist playlist);
 
