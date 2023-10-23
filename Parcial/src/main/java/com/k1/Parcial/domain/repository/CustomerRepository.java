@@ -13,7 +13,7 @@ public interface CustomerRepository {
 
     void delete(Long id);
 
-    Optional<Customer> update(Customer customer);
+    Optional<Customer> update(Long id,Customer customer);
 
     Customer save(Customer customer);
 

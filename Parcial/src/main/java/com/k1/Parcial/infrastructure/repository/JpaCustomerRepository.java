@@ -32,8 +32,9 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Optional<Customer> update(Customer customer) {
-        Optional<Customer> customerToUpdate = daoCustomer.findById(customer.getId());
+    public Optional<Customer> update(Long id,Customer customer) {
+
+        Optional<Customer> customerToUpdate = daoCustomer.findById(id);
         if (customerToUpdate.isPresent()) {
             customerToUpdate.get().setFirstName(customer.getFirstName());
             customerToUpdate.get().setLastName(customer.getLastName());
@@ -46,6 +47,7 @@ public class JpaCustomerRepository implements CustomerRepository {
             customerToUpdate.get().setPhone(customer.getPhone());
             customerToUpdate.get().setFax(customer.getFax());
             customerToUpdate.get().setEmail(customer.getEmail());
+            customerToUpdate.get().setSupportRepId(customer.getSupportRepId());
             daoCustomer.save(customerToUpdate.get());
         }
         return customerToUpdate;

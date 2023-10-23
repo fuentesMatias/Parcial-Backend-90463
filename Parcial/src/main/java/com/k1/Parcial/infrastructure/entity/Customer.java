@@ -19,11 +19,11 @@ package com.k1.Parcial.infrastructure.entity;
 //        ON DELETE NO ACTION ON UPDATE NO ACTION
 //        );
 
+import com.k1.Parcial.application.request.Customer.CustomerPostDto;
+import com.k1.Parcial.application.request.Customer.CustomerUpdateDto;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "customers")
@@ -78,4 +78,34 @@ public class Customer {
             @ManyToOne
             @JoinColumn(name = "SupportRepId")
             private Employe supportRepId;
+
+    public Customer(CustomerPostDto customerDto, Employe employe) {
+        this.firstName = customerDto.getFirstName();
+        this.lastName = customerDto.getLastName();
+        this.company = customerDto.getCompany();
+        this.address = customerDto.getAddress();
+        this.city = customerDto.getCity();
+        this.state = customerDto.getState();
+        this.country = customerDto.getCountry();
+        this.postalCode = customerDto.getPostalCode();
+        this.phone = customerDto.getPhone();
+        this.fax = customerDto.getFax();
+        this.email = customerDto.getEmail();
+        this.supportRepId = employe;
+    }
+
+    public Customer(CustomerUpdateDto entity, Employe employe) {
+        this.firstName = entity.getFirstName();
+        this.lastName = entity.getLastName();
+        this.company = entity.getCompany();
+        this.address = entity.getAddress();
+        this.city = entity.getCity();
+        this.state = entity.getState();
+        this.country = entity.getCountry();
+        this.postalCode = entity.getPostalCode();
+        this.phone = entity.getPhone();
+        this.fax = entity.getFax();
+        this.email = entity.getEmail();
+        this.supportRepId = employe;
+    }
 }
