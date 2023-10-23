@@ -40,16 +40,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Optional<Invoice> update(Invoice invoice) {
-        return Optional.empty();
-    }
-
-    @Override
-    public Invoice save(Invoice entity) {
-        return null;
-    }
-
-    @Override
     public Invoice save(InvoicePostDto invoiceDto) {
 
         Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();

@@ -43,16 +43,6 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public Optional<InvoiceItem> update(InvoiceItem invoiceItem) {
-        return Optional.empty();
-    }
-
-    @Override
-    public InvoiceItem save(InvoiceItem invoiceItem) {
-        return null;
-    }
-
-    @Override
     public InvoiceItem save(InvoiceItemRequestDto invoiceItemDto) {
 
         Track track = trackService.getById(invoiceItemDto.getTrackId()).get();

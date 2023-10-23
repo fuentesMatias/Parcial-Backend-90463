@@ -14,7 +14,7 @@ public interface TrackRepository {
 
     void delete(Long id);
 
-    Optional<Track> update(Track track);
+    Optional<Track> update(Long id,Track track);
 
     Track save(Track track);
 

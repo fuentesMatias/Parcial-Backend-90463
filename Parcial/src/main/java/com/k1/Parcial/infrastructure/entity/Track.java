@@ -22,6 +22,7 @@ CREATE TABLE "tracks"
  */
 
 
+import com.k1.Parcial.application.request.Track.TrackRequestDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -72,4 +73,15 @@ public class Track {
 
             @ManyToMany(mappedBy = "tracks")
             private List<Playlist> playlists;
+
+    public Track(TrackRequestDto trackRequestDto, Album album, Genre genre, MediaType mediaType) {
+        this.name = trackRequestDto.getName();
+        this.album = album;
+        this.genre = genre;
+        this.mediaType = mediaType;
+        this.composer = trackRequestDto.getComposer();
+        this.milliseconds = trackRequestDto.getMilliseconds();
+        this.bytes = trackRequestDto.getBytes();
+        this.unitPrice = trackRequestDto.getUnitPrice();
+    }
 }

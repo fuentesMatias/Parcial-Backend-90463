@@ -1,8 +1,15 @@
 package com.k1.Parcial.domain.service.servicesImpl;
 
 
+import com.k1.Parcial.application.request.Track.TrackRequestDto;
 import com.k1.Parcial.domain.repository.TrackRepository;
+import com.k1.Parcial.domain.service.serviceInterfaces.AlbumService;
+import com.k1.Parcial.domain.service.serviceInterfaces.GenreService;
+import com.k1.Parcial.domain.service.serviceInterfaces.MediaTypesService;
 import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
+import com.k1.Parcial.infrastructure.entity.Album;
+import com.k1.Parcial.infrastructure.entity.Genre;
+import com.k1.Parcial.infrastructure.entity.MediaType;
 import com.k1.Parcial.infrastructure.entity.Track;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +20,18 @@ import java.util.Optional;
 public class TrackServiceImpl implements TrackService {
 
     private final TrackRepository trackRepository;
+    private final AlbumService albumService;
+    private final GenreService genreService;
+    private final MediaTypesService mediaTypeService;
 
-    public TrackServiceImpl(TrackRepository trackRepository) {
+
+    public TrackServiceImpl(TrackRepository trackRepository, AlbumService albumService, GenreService genreService, MediaTypesService mediaTypeService) {
         this.trackRepository = trackRepository;
+        this.albumService = albumService;
+        this.genreService = genreService;
+        this.mediaTypeService = mediaTypeService;
     }
+
     @Override
     public List<Track> getAll() {
         return trackRepository.getAll();
@@ -28,17 +43,28 @@ public class TrackServiceImpl implements TrackService {
     }
 
     @Override
+    public Track save(TrackRequestDto entity) {
+        Genre genre = genreService.getById(entity.getGenreId()).orElseThrow();
+        MediaType mediaType = mediaTypeService.getById(entity.getMediaTypeId()).orElseThrow();
+        Album album = albumService.getById(entity.getAlbumId()).orElseThrow();
+        Track track = new Track(entity,album,genre,mediaType);
+        return trackRepository.save(track);
+    }
+
+    @Override
     public void delete(Long aLong) {
         trackRepository.delete(aLong);
     }
 
     @Override
-    public Optional<Track> update(Track entity) {
-        return Optional.of(trackRepository.update(entity).orElseThrow());
-    }
+    public Optional<Track> update(Long id, TrackRequestDto trackRequestDto) {
 
-    @Override
-    public Track save(Track entity) {
-        return trackRepository.save(entity);
+        Genre genre = genreService.getById(trackRequestDto.getGenreId()).orElseThrow();
+        MediaType mediaType = mediaTypeService.getById(trackRequestDto.getMediaTypeId()).orElseThrow();
+        Album album = albumService.getById(trackRequestDto.getAlbumId()).orElseThrow();
+
+        Track track = new Track(trackRequestDto,album,genre,mediaType);
+
+        return Optional.of(trackRepository.update(id,track).orElseThrow());
     }
 }

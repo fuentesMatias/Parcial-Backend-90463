@@ -38,17 +38,6 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.delete(id);
     }
 
-    @Override
-    public Optional<Customer> update(Customer entity) {
-        return Optional.empty();
-    }
-
-
-    @Override
-    public Customer save(Customer entity) {
-        return null;
-    }
-
 
     @Override
     public Customer save(CustomerPostDto customerDto) {

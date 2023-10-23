@@ -18,11 +18,13 @@ public class JpaTrackRepository implements TrackRepository {
     private final DaoTrack daoTrack;
 
     public JpaTrackRepository(DaoTrack daoTrack) {
+
         this.daoTrack = daoTrack;
     }
 
     @Override
     public List<Track> getAll() {
+
         return daoTrack.findAll();
     }
 
@@ -38,16 +40,15 @@ public class JpaTrackRepository implements TrackRepository {
     }
 
     @Override
-    public Optional<Track> update(Track track) {
+    public Optional<Track> update(Long id,Track track) {
         Optional<Track> trackToUpdate = daoTrack.findById(track.getId());
         if (trackToUpdate.isPresent()) {
             trackToUpdate.get().setName(track.getName());
-            trackToUpdate.get().setMediaType(track.getMediaType());
-            trackToUpdate.get().setGenre(track.getGenre());
             trackToUpdate.get().setComposer(track.getComposer());
             trackToUpdate.get().setMilliseconds(track.getMilliseconds());
             trackToUpdate.get().setBytes(track.getBytes());
             trackToUpdate.get().setUnitPrice(track.getUnitPrice());
+
             daoTrack.save(trackToUpdate.get());
         }
         return trackToUpdate;

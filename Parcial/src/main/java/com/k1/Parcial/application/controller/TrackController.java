@@ -1,6 +1,7 @@
 package com.k1.Parcial.application.controller;
 
 
+import com.k1.Parcial.application.request.Track.TrackRequestDto;
 import com.k1.Parcial.application.response.Track.TrackResponseDto;
 import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
 import com.k1.Parcial.infrastructure.entity.Track;
@@ -25,8 +26,8 @@ public class TrackController {
     @GetMapping
     public ResponseEntity<?> getAllTracks(){
         try {
-            List<TrackResponseDto> responseDTOList = trackService.getAll().stream().map(TrackResponseDto::new).toList();
-            return ResponseEntity.ok().body(responseDTOList);
+            List<TrackResponseDto> tracks = trackService.getAll().stream().map(TrackResponseDto::new).toList();
+            return ResponseEntity.ok().body(tracks);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -35,8 +36,18 @@ public class TrackController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getTrackById(@PathVariable("id") Long id){
         try {
-            TrackResponseDto responseDTO = new TrackResponseDto(trackService.getById(id).get());
-            return ResponseEntity.status(200).body(responseDTO);
+            TrackResponseDto tack = new TrackResponseDto(trackService.getById(id).get());
+            return ResponseEntity.status(200).body(tack);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<?> registrarTrack(@RequestBody TrackRequestDto trackRequestDto){
+        try {
+
+            return ResponseEntity.ok().body(trackService.save(trackRequestDto));
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -52,19 +63,10 @@ public class TrackController {
         }
     }
 
-    @PostMapping
-    public ResponseEntity<?> registrarTrack(@RequestBody Track track){
+    @PutMapping("/{id}") //TODO revisar no funciona
+    public ResponseEntity<?> actualizarTrack(Long id,@RequestBody TrackRequestDto trackRequestDto){
         try {
-            return ResponseEntity.ok().body(trackService.save(track));
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
-        }
-    }
-
-    @PutMapping
-    public ResponseEntity<?> actualizarTrack(@RequestBody Track track){
-        try {
-            return ResponseEntity.ok().body(trackService.update(track).get());
+            return ResponseEntity.ok().body(trackService.update(id,trackRequestDto).get());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
