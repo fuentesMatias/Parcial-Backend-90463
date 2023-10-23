@@ -52,6 +52,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer save(CustomerPostDto customerDto) {
+
         Employe employe = employeService.getById(customerDto.getSupportRepId()).get();
 
         Customer customer = new Customer(customerDto,employe);
@@ -59,10 +60,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<Customer> update(Long id,CustomerUpdateDto entity) {
-        Employe employe = employeService.getById(entity.getSupportRepId()).get();
+    public Optional<Customer> update(Long id,CustomerUpdateDto dto) {
 
-        Customer customer = new Customer(entity,employe);
+        Employe employe = employeService.getById(dto.getSupportRepId()).get();
+
+        Customer customer = new Customer(dto,employe);
 
         return customerRepository.update(id,customer);
     }

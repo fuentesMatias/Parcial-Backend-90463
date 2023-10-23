@@ -13,7 +13,7 @@ public interface InvoiceRepository {
 
     void delete(Long id);
 
-    Optional<Invoice> update(Invoice invoice);
+    Optional<Invoice> update(Long id,Invoice invoice);
 
     Invoice save(Invoice invoice);
 

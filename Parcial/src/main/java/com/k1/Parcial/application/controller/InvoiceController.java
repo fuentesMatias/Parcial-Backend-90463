@@ -1,11 +1,17 @@
 package com.k1.Parcial.application.controller;
 
 
+import com.k1.Parcial.application.request.Customer.CustomerPostDto;
+import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
+import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
+import com.k1.Parcial.application.response.Invoice.InvoiceResponseDto;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
 import com.k1.Parcial.infrastructure.entity.Invoice;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/invoice")
@@ -20,7 +26,8 @@ public class InvoiceController {
     @GetMapping
     public ResponseEntity<?> getAllInvoices(){
         try {
-            return ResponseEntity.ok().body(invoiceService.getAll());
+            List<InvoiceResponseDto> responseDTOList = invoiceService.getAll().stream().map(InvoiceResponseDto::new).toList();
+            return ResponseEntity.ok().body(responseDTOList);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -29,13 +36,14 @@ public class InvoiceController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getInvoiceById(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.status(200).body(invoiceService.getById(id));
+            InvoiceResponseDto responseDTO = new InvoiceResponseDto(invoiceService.getById(id).get());
+            return ResponseEntity.status(200).body(responseDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") //TODO No usar
     public ResponseEntity<?> deleteInvoice(@PathVariable("id") Long id){
         try {
             invoiceService.delete(id);
@@ -46,18 +54,18 @@ public class InvoiceController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarInvoice(@RequestBody Invoice invoice){
+    public ResponseEntity<?> registrarInvoice(@RequestBody InvoicePostDto invoiceDto){
         try {
-            return ResponseEntity.ok().body(invoiceService.save(invoice));
+            return ResponseEntity.ok().body(invoiceService.save(invoiceDto));
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> actualizarInvoice(@RequestBody Invoice invoice){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarInvoice(@PathVariable("id") Long id,@RequestBody InvoiceUpdateDto invoiceDto){
         try {
-            return ResponseEntity.ok().body(invoiceService.update(invoice).get());
+            return ResponseEntity.ok().body(invoiceService.update(id,invoiceDto).get());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

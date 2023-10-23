@@ -36,11 +36,18 @@ public class JpaInvoiceRepository implements InvoiceRepository {
     }
 
     @Override
-    public Optional<Invoice> update(Invoice invoice) {
-        Optional<Invoice> invoiceToUpdate = daoInvoice.findById(invoice.getId());
+    public Optional<Invoice> update(Long id,Invoice invoice) {
+        Optional<Invoice> invoiceToUpdate = daoInvoice.findById(id);
         if (invoiceToUpdate.isPresent()) {
             invoiceToUpdate.get().setTotal(invoice.getTotal());
             invoiceToUpdate.get().setInvoiceDate(invoice.getInvoiceDate());
+            invoiceToUpdate.get().setBillingAddress(invoice.getBillingAddress());
+            invoiceToUpdate.get().setBillingCity(invoice.getBillingCity());
+            invoiceToUpdate.get().setBillingState(invoice.getBillingState());
+            invoiceToUpdate.get().setBillingCountry(invoice.getBillingCountry());
+            invoiceToUpdate.get().setBillingPostalCode(invoice.getBillingPostalCode());
+            invoiceToUpdate.get().setTotal(invoice.getTotal());
+            invoiceToUpdate.get().setCustomer(invoice.getCustomer());
             daoInvoice.save(invoiceToUpdate.get());
         }
         return invoiceToUpdate;

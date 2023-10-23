@@ -1,6 +1,7 @@
 package com.k1.Parcial.domain.service.servicesImpl;
 
-import com.k1.Parcial.domain.repository.CustomerRepository;
+import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
+import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
 import com.k1.Parcial.domain.repository.InvoiceRepository;
 import com.k1.Parcial.domain.service.serviceInterfaces.CustomerService;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
@@ -16,8 +17,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
 
-    public InvoiceServiceImpl(InvoiceRepository invoiceRepository) {
+    private final CustomerService customerService;
+
+    public InvoiceServiceImpl(InvoiceRepository invoiceRepository, CustomerService customerService) {
         this.invoiceRepository = invoiceRepository;
+        this.customerService = customerService;
     }
 
     @Override
@@ -37,11 +41,29 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Optional<Invoice> update(Invoice invoice) {
-        return Optional.of(invoiceRepository.update(invoice).orElseThrow());
+        return Optional.empty();
     }
 
     @Override
-    public Invoice save(Invoice invoice) {
+    public Invoice save(Invoice entity) {
+        return null;
+    }
+
+    @Override
+    public Invoice save(InvoicePostDto invoiceDto) {
+
+        Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
+        Invoice invoice = new Invoice(invoiceDto,customer);
+
         return invoiceRepository.save(invoice);
+    }
+
+    @Override
+    public Optional<Invoice> update(Long id, InvoiceUpdateDto invoiceDto) {
+        Customer customer = customerService.getById(id).get();
+
+        Invoice invoice = new Invoice(invoiceDto,customer);
+
+        return invoiceRepository.update(id,invoice);
     }
 }

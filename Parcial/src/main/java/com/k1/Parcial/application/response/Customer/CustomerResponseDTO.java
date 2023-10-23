@@ -1,4 +1,4 @@
-package com.k1.Parcial.application.response;
+package com.k1.Parcial.application.response.Customer;
 
 import com.k1.Parcial.infrastructure.entity.Customer;
 import lombok.Data;

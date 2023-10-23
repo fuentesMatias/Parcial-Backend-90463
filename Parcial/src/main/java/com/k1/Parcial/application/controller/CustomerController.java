@@ -3,10 +3,9 @@ package com.k1.Parcial.application.controller;
 
 import com.k1.Parcial.application.request.Customer.CustomerPostDto;
 import com.k1.Parcial.application.request.Customer.CustomerUpdateDto;
-import com.k1.Parcial.application.response.CustomerResponseDTO;
+import com.k1.Parcial.application.response.Customer.CustomerResponseDTO;
 import com.k1.Parcial.domain.service.serviceInterfaces.CustomerService;
 import com.k1.Parcial.domain.service.serviceInterfaces.EmployeService;
-import com.k1.Parcial.infrastructure.entity.Customer;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ public class CustomerController {
         this.customerService = customerService;
         this.employeService = employeService;
     }
-    @RequestMapping
+    @GetMapping
     public ResponseEntity<?> getAllCustomers(){
         try {
             List<CustomerResponseDTO> responseDTOList = customerService.getAll().stream().map(CustomerResponseDTO::new).toList();
@@ -33,25 +32,25 @@ public class CustomerController {
         }
     }
 
-    @RequestMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getCustomerById(@PathVariable("id") Long id){
         try {
-            CustomerResponseDTO responseDTO = new CustomerResponseDTO(customerService.getById(id).get());;
+            CustomerResponseDTO responseDTO = new CustomerResponseDTO(customerService.getById(id).get());
             return ResponseEntity.status(200).body(responseDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
-//    @DeleteMapping
-//    public ResponseEntity<?> deleteCustomer(@PathVariable("id") Long id){
-//        try {
-//            customerService.delete(id);
-//            return ResponseEntity.ok().body("Customer deleted");
-//        } catch (RuntimeException e) {
-//            return ResponseEntity.status(404).body(e.getMessage());
-//        }
-//    }
+        @DeleteMapping("/{id}") //TODO No usar
+        public ResponseEntity<?> deleteCustomer(@PathVariable("id") Long id){
+            try {
+                customerService.delete(id);
+                return ResponseEntity.ok().body("Customer deleted");
+            } catch (RuntimeException e) {
+                return ResponseEntity.status(404).body(e.getMessage());
+            }
+    }
 
     @PostMapping
     public ResponseEntity<?> registrarCustomer(@RequestBody CustomerPostDto customerDto){
@@ -67,9 +66,10 @@ public class CustomerController {
         }
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<?> actualizarCustomer(@PathVariable Long id,@RequestBody CustomerUpdateDto customerDto){
         try {
+
             return ResponseEntity.ok().body(customerService.update(id,customerDto));
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());

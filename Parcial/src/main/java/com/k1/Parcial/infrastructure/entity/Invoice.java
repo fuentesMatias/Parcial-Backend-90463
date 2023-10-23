@@ -14,6 +14,8 @@ package com.k1.Parcial.infrastructure.entity;
 //        ON DELETE NO ACTION ON UPDATE NO ACTION
 //        );
 
+import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
+import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -60,4 +62,30 @@ public class Invoice {
 
             @Column(name = "Total")
             private double total;
+
+    public Invoice(InvoicePostDto invoiceDto, Customer customer) {
+
+        this.invoiceDate = invoiceDto.getInvoiceDate();
+        this.billingAddress = invoiceDto.getBillingAddress();
+        this.billingCity = invoiceDto.getBillingCity();
+        this.billingState = invoiceDto.getBillingState();
+        this.billingCountry = invoiceDto.getBillingCountry();
+        this.billingPostalCode = invoiceDto.getBillingPostalCode();
+        this.total = invoiceDto.getTotal();
+        this.customer = customer;
+
+    }
+
+    public Invoice(InvoiceUpdateDto invoiceDto, Customer customer) {
+
+        this.invoiceDate = invoiceDto.getInvoiceDate();
+        this.billingAddress = invoiceDto.getBillingAddress();
+        this.billingCity = invoiceDto.getBillingCity();
+        this.billingState = invoiceDto.getBillingState();
+        this.billingCountry = invoiceDto.getBillingCountry();
+        this.billingPostalCode = invoiceDto.getBillingPostalCode();
+        this.total = invoiceDto.getTotal();
+        this.customer = customer;
+
+    }
 }
