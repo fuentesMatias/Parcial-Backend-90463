@@ -1,10 +1,14 @@
 package com.k1.Parcial.application.controller;
 
 
+import com.k1.Parcial.application.request.InvoiceItem.InvoiceItemRequestDto;
+import com.k1.Parcial.application.response.InvoiceItem.InvoiceItemReponseDto;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceItemService;
 import com.k1.Parcial.infrastructure.entity.InvoiceItem;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/invoiceItem")
@@ -19,7 +23,8 @@ public class InvoiceItemController {
     @GetMapping
     public ResponseEntity<?> getAllInvoiceItems(){
         try {
-            return ResponseEntity.ok().body(invoiceItemService.getAll());
+            List<InvoiceItemReponseDto> responseDTOList = invoiceItemService.getAll().stream().map(InvoiceItemReponseDto::new).toList();
+            return ResponseEntity.ok().body(responseDTOList);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -28,16 +33,18 @@ public class InvoiceItemController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getInvoiceItemById(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.status(200).body(invoiceItemService.getById(id));
+            InvoiceItemReponseDto responseDTO = new InvoiceItemReponseDto(invoiceItemService.getById(id).get());
+            return ResponseEntity.status(200).body(responseDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> registrarInvoiceItem(@RequestBody InvoiceItem invoiceItem){
+    public ResponseEntity<?> registrarInvoiceItem(@RequestBody InvoiceItemRequestDto invoiceItemDto){
         try {
-            return ResponseEntity.ok().body(invoiceItemService.save(invoiceItem));
+
+            return ResponseEntity.ok().body(invoiceItemService.save(invoiceItemDto).toDto());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -53,10 +60,10 @@ public class InvoiceItemController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> actualizarInvoiceItem(@RequestBody InvoiceItem invoiceItem){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarInvoiceItem(@PathVariable("id") Long id,@RequestBody InvoiceItemRequestDto invoiceItemDto){
         try {
-            return ResponseEntity.ok().body(invoiceItemService.update(invoiceItem).get());
+            return ResponseEntity.ok().body(invoiceItemService.update(id,invoiceItemDto).toDto());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

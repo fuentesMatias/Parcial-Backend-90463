@@ -12,6 +12,8 @@ package com.k1.Parcial.infrastructure.entity;
 //        ON DELETE NO ACTION ON UPDATE NO ACTION
 //        );
 
+import com.k1.Parcial.application.request.InvoiceItem.InvoiceItemRequestDto;
+import com.k1.Parcial.application.response.InvoiceItem.InvoiceItemReponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,4 +46,14 @@ public class InvoiceItem {
 
                 @Column(name = "Quantity")
                 private int quantity;
+
+                public InvoiceItem(InvoiceItemRequestDto invoiceItemRequestDto, Invoice invoice, Track track) {
+                    this.invoice = invoice;
+                    this.track = track;
+                    this.unitPrice = invoiceItemRequestDto.getUnitPrice();
+                    this.quantity = invoiceItemRequestDto.getQuantity();
+                }
+                public InvoiceItemReponseDto toDto(){
+                    return new InvoiceItemReponseDto(this);
+                }
 }

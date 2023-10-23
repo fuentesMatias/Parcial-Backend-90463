@@ -55,11 +55,8 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<?> registrarCustomer(@RequestBody CustomerPostDto customerDto){
         try {
-
 //            Employe employe = employeService.getById(customerDto.getSupportRepId()).get();
-//
 //            Customer customer = new Customer(customerDto,employe);
-
             return ResponseEntity.ok().body(customerService.save(customerDto));
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());

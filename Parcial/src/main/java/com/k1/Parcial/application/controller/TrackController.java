@@ -1,12 +1,15 @@
 package com.k1.Parcial.application.controller;
 
 
+import com.k1.Parcial.application.response.Track.TrackResponseDto;
 import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
 import com.k1.Parcial.infrastructure.entity.Track;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 
 @RestController
@@ -22,7 +25,8 @@ public class TrackController {
     @GetMapping
     public ResponseEntity<?> getAllTracks(){
         try {
-            return ResponseEntity.ok().body(trackService.getAll());
+            List<TrackResponseDto> responseDTOList = trackService.getAll().stream().map(TrackResponseDto::new).toList();
+            return ResponseEntity.ok().body(responseDTOList);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -31,7 +35,8 @@ public class TrackController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getTrackById(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.status(200).body(trackService.getById(id).get());
+            TrackResponseDto responseDTO = new TrackResponseDto(trackService.getById(id).get());
+            return ResponseEntity.status(200).body(responseDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

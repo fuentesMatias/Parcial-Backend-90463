@@ -1,6 +1,7 @@
 package com.k1.Parcial.application.controller;
 
 
+import com.k1.Parcial.application.response.Playlist.PlaylistResponseDto;
 import com.k1.Parcial.infrastructure.entity.Playlist;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,8 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.k1.Parcial.domain.service.serviceInterfaces.PlaylistService;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/playList")
+@RequestMapping("/api/playlist")
 public class PlaylistController {
 
     private final PlaylistService playlistService;
@@ -21,7 +24,8 @@ public class PlaylistController {
     @GetMapping
     public ResponseEntity<?> getAllPlaylists(){
         try {
-            return ResponseEntity.ok().body(playlistService.getAll());
+            List<PlaylistResponseDto> responseDTOList = playlistService.getAll().stream().map(PlaylistResponseDto::new).toList();
+            return ResponseEntity.ok().body(responseDTOList);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -30,6 +34,7 @@ public class PlaylistController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getPlaylistById(@PathVariable("id") Long id){
         try {
+            PlaylistResponseDto responseDTO = new PlaylistResponseDto(playlistService.getById(id).get());
             return ResponseEntity.status(200).body(playlistService.getById(id).get());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());

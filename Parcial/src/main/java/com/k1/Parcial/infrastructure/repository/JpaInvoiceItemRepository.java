@@ -38,9 +38,11 @@ public class JpaInvoiceItemRepository implements InvoiceItemRepository {
     }
 
     @Override
-    public Optional<InvoiceItem> update(InvoiceItem invoiceItem) {
-        Optional<InvoiceItem> invoiceItemToUpdate = daoInvoiceItem.findById(invoiceItem.getId());
+    public Optional<InvoiceItem> update(Long id,InvoiceItem invoiceItem) {
+        Optional<InvoiceItem> invoiceItemToUpdate = daoInvoiceItem.findById(id);
         if (invoiceItemToUpdate.isPresent()) {
+            invoiceItemToUpdate.get().setInvoice(invoiceItem.getInvoice());
+            invoiceItemToUpdate.get().setTrack(invoiceItem.getTrack());
             invoiceItemToUpdate.get().setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemToUpdate.get().setQuantity(invoiceItem.getQuantity());
             daoInvoiceItem.save(invoiceItemToUpdate.get());

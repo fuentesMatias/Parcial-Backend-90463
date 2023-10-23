@@ -30,7 +30,7 @@ public class Playlist {
             @Column(name = "Name")
             private String name;
 
-            @ManyToMany
+            @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
             @JoinTable(
                     name = "playlist_track",
                     joinColumns = @JoinColumn(name = "PlaylistId"),

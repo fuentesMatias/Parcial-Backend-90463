@@ -1,9 +1,14 @@
 package com.k1.Parcial.domain.service.servicesImpl;
 
 
+import com.k1.Parcial.application.request.InvoiceItem.InvoiceItemRequestDto;
 import com.k1.Parcial.domain.repository.InvoiceItemRepository;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceItemService;
+import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
+import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
+import com.k1.Parcial.infrastructure.entity.Invoice;
 import com.k1.Parcial.infrastructure.entity.InvoiceItem;
+import com.k1.Parcial.infrastructure.entity.Track;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +18,13 @@ import java.util.Optional;
 public class InvoiceItemServiceImpl implements InvoiceItemService {
 
     private final InvoiceItemRepository invoiceItemRepository;
+    private final InvoiceService invoiceService;
+    private final TrackService trackService;
 
-    public InvoiceItemServiceImpl(InvoiceItemRepository invoiceItemRepository) {
+    public InvoiceItemServiceImpl(InvoiceItemRepository invoiceItemRepository, InvoiceService invoiceService, TrackService trackService) {
         this.invoiceItemRepository = invoiceItemRepository;
+        this.invoiceService = invoiceService;
+        this.trackService = trackService;
     }
 
     @Override
@@ -35,11 +44,35 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
 
     @Override
     public Optional<InvoiceItem> update(InvoiceItem invoiceItem) {
-        return Optional.of(invoiceItemRepository.update(invoiceItem).orElseThrow());
+        return Optional.empty();
     }
 
     @Override
     public InvoiceItem save(InvoiceItem invoiceItem) {
+        return null;
+    }
+
+    @Override
+    public InvoiceItem save(InvoiceItemRequestDto invoiceItemDto) {
+
+        Track track = trackService.getById(invoiceItemDto.getTrackId()).get();
+
+        Invoice invoice = invoiceService.getById(invoiceItemDto.getInvoiceId()).get();
+
+        InvoiceItem invoiceItem = new InvoiceItem(invoiceItemDto,invoice,track);
+
         return invoiceItemRepository.save(invoiceItem);
+    }
+
+    @Override
+    public InvoiceItem update(Long id, InvoiceItemRequestDto invoiceItemDto) {
+
+        Track track = trackService.getById(invoiceItemDto.getTrackId()).get();
+
+        Invoice invoice = invoiceService.getById(invoiceItemDto.getInvoiceId()).get();
+
+        InvoiceItem invoiceItem = new InvoiceItem(invoiceItemDto,invoice,track);
+
+        return invoiceItemRepository.update(id,invoiceItem).get();
     }
 }

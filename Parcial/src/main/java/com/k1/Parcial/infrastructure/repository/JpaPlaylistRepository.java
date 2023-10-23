@@ -20,23 +20,18 @@ public class JpaPlaylistRepository implements PlaylistRepository {
     public JpaPlaylistRepository(DaoPlaylist daoPlaylist) {
         this.daoPlaylist = daoPlaylist;
     }
-
-
     @Override
     public List<Playlist> getAll() {
         return daoPlaylist.findAll();
     }
-
     @Override
     public Optional<Playlist> getById(Long id) {
         return daoPlaylist.findById(id);
     }
-
     @Override
     public void delete(Long id) {
         daoPlaylist.deleteById(id);
     }
-
     @Override
     public Optional<Playlist> update(Playlist playlist) {
         Optional<Playlist> playlistToUpdate = daoPlaylist.findById(playlist.getId());
@@ -46,9 +41,10 @@ public class JpaPlaylistRepository implements PlaylistRepository {
         }
         return playlistToUpdate;
     }
-
     @Override
     public Playlist save(Playlist playlist) {
         return daoPlaylist.save(playlist);
     }
+
+
 }
