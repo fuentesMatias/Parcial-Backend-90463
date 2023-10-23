@@ -23,6 +23,7 @@ CREATE TABLE "tracks"
 
 
 import com.k1.Parcial.application.request.Track.TrackRequestDto;
+import com.k1.Parcial.application.response.Track.TrackResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -83,5 +84,8 @@ public class Track {
         this.milliseconds = trackRequestDto.getMilliseconds();
         this.bytes = trackRequestDto.getBytes();
         this.unitPrice = trackRequestDto.getUnitPrice();
+    }
+    public TrackResponseDto toDto(){
+        return new TrackResponseDto(this);
     }
 }

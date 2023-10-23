@@ -48,7 +48,6 @@ public class JpaCustomerRepository implements CustomerRepository {
             customerToUpdate.get().setFax(customer.getFax());
             customerToUpdate.get().setEmail(customer.getEmail());
             customerToUpdate.get().setSupportRepId(customer.getSupportRepId());
-
             daoCustomer.save(customerToUpdate.get());
         }
         return customerToUpdate;

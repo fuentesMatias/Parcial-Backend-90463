@@ -65,6 +65,6 @@ public class TrackServiceImpl implements TrackService {
 
         Track track = new Track(trackRequestDto,album,genre,mediaType);
 
-        return Optional.of(trackRepository.update(id,track).orElseThrow());
+        return trackRepository.update(id,track);
     }
 }

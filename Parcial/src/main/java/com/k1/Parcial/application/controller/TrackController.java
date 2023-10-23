@@ -63,10 +63,10 @@ public class TrackController {
         }
     }
 
-    @PutMapping("/{id}") //TODO revisar no funciona
-    public ResponseEntity<?> actualizarTrack(Long id,@RequestBody TrackRequestDto trackRequestDto){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarTrack(@PathVariable("id") Long id,@RequestBody TrackRequestDto trackRequestDto){
         try {
-            return ResponseEntity.ok().body(trackService.update(id,trackRequestDto).get());
+            return ResponseEntity.ok().body(trackService.update(id,trackRequestDto).get().toDto());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

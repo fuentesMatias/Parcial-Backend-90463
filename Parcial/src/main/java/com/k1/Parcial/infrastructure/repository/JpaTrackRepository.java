@@ -41,14 +41,18 @@ public class JpaTrackRepository implements TrackRepository {
 
     @Override
     public Optional<Track> update(Long id,Track track) {
-        Optional<Track> trackToUpdate = daoTrack.findById(track.getId());
+
+        Optional<Track> trackToUpdate = daoTrack.findById(id);
+
         if (trackToUpdate.isPresent()) {
             trackToUpdate.get().setName(track.getName());
             trackToUpdate.get().setComposer(track.getComposer());
             trackToUpdate.get().setMilliseconds(track.getMilliseconds());
             trackToUpdate.get().setBytes(track.getBytes());
             trackToUpdate.get().setUnitPrice(track.getUnitPrice());
-
+            trackToUpdate.get().setAlbum(track.getAlbum());
+            trackToUpdate.get().setGenre(track.getGenre());
+            trackToUpdate.get().setMediaType(track.getMediaType());
             daoTrack.save(trackToUpdate.get());
         }
         return trackToUpdate;
