@@ -109,6 +109,20 @@ public class Customer {
         this.supportRepId = employe;
     }
 
+    public Customer(CustomerUpdateDto dto) {
+        this.firstName = dto.getFirstName();
+        this.lastName = dto.getLastName();
+        this.company = dto.getCompany();
+        this.address = dto.getAddress();
+        this.city = dto.getCity();
+        this.state = dto.getState();
+        this.country = dto.getCountry();
+        this.postalCode = dto.getPostalCode();
+        this.phone = dto.getPhone();
+        this.fax = dto.getFax();
+        this.email = dto.getEmail();
+    }
+
     public CustomerResponseDTO toCustomerResponseDTO() {
         return new CustomerResponseDTO(this);
     }

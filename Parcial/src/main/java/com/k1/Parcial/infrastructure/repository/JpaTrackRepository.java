@@ -8,6 +8,7 @@ import com.k1.Parcial.infrastructure.entity.Customer;
 import com.k1.Parcial.infrastructure.entity.Track;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,23 +41,36 @@ public class JpaTrackRepository implements TrackRepository {
     }
 
     @Override
-    public Optional<Track> update(Long id,Track track) {
-
+    public Optional<Track> update(Long id, Track trackNewData) {
         Optional<Track> trackToUpdate = daoTrack.findById(id);
 
         if (trackToUpdate.isPresent()) {
-            trackToUpdate.get().setName(track.getName());
-            trackToUpdate.get().setComposer(track.getComposer());
-            trackToUpdate.get().setMilliseconds(track.getMilliseconds());
-            trackToUpdate.get().setBytes(track.getBytes());
-            trackToUpdate.get().setUnitPrice(track.getUnitPrice());
-            trackToUpdate.get().setAlbum(track.getAlbum());
-            trackToUpdate.get().setGenre(track.getGenre());
-            trackToUpdate.get().setMediaType(track.getMediaType());
-            daoTrack.save(trackToUpdate.get());
+            Track track = trackToUpdate.get();
+
+            //Setea el id de trackNewData para evitar problemas
+            trackNewData.setId(id);
+
+            // Obtener todos los campos de la clase Track
+            Field[] fields = trackNewData.getClass().getDeclaredFields();
+
+            // Recorre todos los campos de la clase Track y actualiza solo los no nulos
+            for (Field field : fields) {
+                try {
+                    field.setAccessible(true);
+
+                    Object value = field.get(trackNewData);
+                    if (value != null) {
+                        field.set(track, value);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+            daoTrack.save(track);
         }
         return trackToUpdate;
     }
+
 
     @Override
     public Track save(Track track) {

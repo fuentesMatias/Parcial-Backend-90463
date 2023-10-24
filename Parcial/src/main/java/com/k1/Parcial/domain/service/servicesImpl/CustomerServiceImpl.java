@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.OptionalLong;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -57,10 +58,13 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Optional<Customer> update(Long id,CustomerUpdateDto dto) {
-
-        Employe employe = employeService.getById(dto.getSupportRepId()).get();
-
-        Customer customer = new Customer(dto,employe);
+        Customer customer;
+        if (dto.getSupportRepId() == 0){
+             customer = new Customer(dto);
+        }else{
+            Employe employe = employeService.getById(dto.getSupportRepId()).get();
+             customer = new Customer(dto,employe);
+        }
 
         return customerRepository.update(id,customer);
     }

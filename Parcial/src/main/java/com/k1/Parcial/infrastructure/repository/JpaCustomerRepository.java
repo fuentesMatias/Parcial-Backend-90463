@@ -34,9 +34,12 @@ public class JpaCustomerRepository implements CustomerRepository {
 
     @Override
     public Optional<Customer> update(Long id, Customer customerNewData) {
+
         Optional<Customer> customerToUpdate = daoCustomer.findById(id);
 
+
         if (customerToUpdate.isPresent()) {
+
             // Obtener todos los campos de la clase Customer
             Field[] fields = customerNewData.getClass().getDeclaredFields();
             // Recorre todos los field de la clase CustomerNewData y los setea en el customerToUpdate los que no son null
@@ -52,8 +55,6 @@ public class JpaCustomerRepository implements CustomerRepository {
                     e.printStackTrace();
                 }
             }
-
-
             daoCustomer.save(customerToUpdate.get());
         }
 
