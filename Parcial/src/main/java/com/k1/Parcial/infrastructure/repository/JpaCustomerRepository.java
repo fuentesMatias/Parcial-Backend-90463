@@ -5,6 +5,7 @@ import com.k1.Parcial.infrastructure.dao.DaoCustomer;
 import com.k1.Parcial.infrastructure.entity.Customer;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,24 +33,30 @@ public class JpaCustomerRepository implements CustomerRepository {
     }
 
     @Override
-    public Optional<Customer> update(Long id,Customer customer) {
-
+    public Optional<Customer> update(Long id, Customer customerNewData) {
         Optional<Customer> customerToUpdate = daoCustomer.findById(id);
+
         if (customerToUpdate.isPresent()) {
-            customerToUpdate.get().setFirstName(customer.getFirstName());
-            customerToUpdate.get().setLastName(customer.getLastName());
-            customerToUpdate.get().setCompany(customer.getCompany());
-            customerToUpdate.get().setAddress(customer.getAddress());
-            customerToUpdate.get().setCity(customer.getCity());
-            customerToUpdate.get().setState(customer.getState());
-            customerToUpdate.get().setCountry(customer.getCountry());
-            customerToUpdate.get().setPostalCode(customer.getPostalCode());
-            customerToUpdate.get().setPhone(customer.getPhone());
-            customerToUpdate.get().setFax(customer.getFax());
-            customerToUpdate.get().setEmail(customer.getEmail());
-            customerToUpdate.get().setSupportRepId(customer.getSupportRepId());
+            // Obtener todos los campos de la clase Customer
+            Field[] fields = customerNewData.getClass().getDeclaredFields();
+            // Recorre todos los field de la clase CustomerNewData y los setea en el customerToUpdate los que no son null
+            for (int i = 1; i < fields.length; i++) {
+                try {
+                    Field field = fields[i];
+                    field.setAccessible(true);
+                    Object value = field.get(customerNewData);
+                    if (value != null) {
+                        field.set(customerToUpdate.get(), value);
+                    }
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             daoCustomer.save(customerToUpdate.get());
         }
+
         return customerToUpdate;
     }
 
@@ -57,4 +64,5 @@ public class JpaCustomerRepository implements CustomerRepository {
     public Customer save(Customer customer) {
         return daoCustomer.save(customer);
     }
+
 }
