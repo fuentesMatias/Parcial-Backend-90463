@@ -154,7 +154,7 @@ public class CustomerServiceImplTest {
     }
 
     @Test
-    void test_save_unsuccess() throws ServiceException {
+    void test_save_unsuccess_diff() throws ServiceException {
         CustomerPostDto customerSimulado = new CustomerPostDto();
         customerSimulado.setFirstName("unNombre2");
         customerSimulado.setSupportRepId(1L);

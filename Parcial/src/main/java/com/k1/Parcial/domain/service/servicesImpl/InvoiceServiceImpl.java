@@ -31,8 +31,10 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Optional<Invoice> getById(Long id) {
+    public Optional<Invoice> getById(Long id) throws ServiceException {
+        if (id == null) throw new ServiceException("El id no puede ser nulo");
         return Optional.of(invoiceRepository.getById(id).orElseThrow());
+
     }
 
     @Override
@@ -43,10 +45,14 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public Invoice save(InvoicePostDto invoiceDto) throws ServiceException {
 
-        Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
-        Invoice invoice = new Invoice(invoiceDto,customer);
+        try {
+            Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
+            Invoice invoice = new Invoice(invoiceDto,customer);
+            return invoiceRepository.save(invoice);
+        } catch (RuntimeException e) {
+            throw new ServiceException(e.getMessage());
+        }
 
-        return invoiceRepository.save(invoice);
     }
 
     @Override

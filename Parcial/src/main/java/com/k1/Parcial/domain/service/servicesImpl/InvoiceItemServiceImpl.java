@@ -3,6 +3,7 @@ package com.k1.Parcial.domain.service.servicesImpl;
 
 import com.k1.Parcial.application.request.InvoiceItem.InvoiceItemRequestDto;
 import com.k1.Parcial.domain.repository.InvoiceItemRepository;
+import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceItemService;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
 import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
@@ -11,6 +12,7 @@ import com.k1.Parcial.infrastructure.entity.InvoiceItem;
 import com.k1.Parcial.infrastructure.entity.Track;
 import org.springframework.stereotype.Service;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +35,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public Optional<InvoiceItem> getById(Long id) {
+    public Optional<InvoiceItem> getById(Long id) throws ServiceException {
+        if (id == null) throw new ServiceException("El id no puede ser nulo");
         return Optional.of(invoiceItemRepository.getById(id).orElseThrow());
     }
 
@@ -43,7 +46,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public InvoiceItem save(InvoiceItemRequestDto invoiceItemDto) {
+    public InvoiceItem save(InvoiceItemRequestDto invoiceItemDto) throws ServiceException {
 
         Track track = trackService.getById(invoiceItemDto.getTrackId()).get();
 
@@ -55,7 +58,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public InvoiceItem update(Long id, InvoiceItemRequestDto invoiceItemDto) {
+    public InvoiceItem update(Long id, InvoiceItemRequestDto invoiceItemDto) throws ServiceException {
 
         Track track = trackService.getById(invoiceItemDto.getTrackId()).get();
 

@@ -34,12 +34,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Optional<Customer> getById(Long id) throws ServiceException {
-        Optional<Customer> customer = customerRepository.getById(id);
-        if (customer.isPresent()) {
-            return customer;
-        } else {
-            throw new ServiceException("Customer not found");
-        }
+        if (Objects.isNull(id)) throw new RuntimeException("El id no puede ser nulo");
+        return Optional.of(customerRepository.getById(id).orElseThrow());
     }
 
     @Override

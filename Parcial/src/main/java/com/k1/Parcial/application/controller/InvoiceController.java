@@ -40,7 +40,7 @@ public class InvoiceController {
         try {
             InvoiceResponseDto responseDTO = new InvoiceResponseDto(invoiceService.getById(id).get());
             return ResponseEntity.status(200).body(responseDTO);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ServiceException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }

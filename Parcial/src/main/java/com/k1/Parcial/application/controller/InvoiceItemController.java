@@ -3,11 +3,13 @@ package com.k1.Parcial.application.controller;
 
 import com.k1.Parcial.application.request.InvoiceItem.InvoiceItemRequestDto;
 import com.k1.Parcial.application.response.InvoiceItem.InvoiceItemReponseDto;
+import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceItemService;
 import com.k1.Parcial.infrastructure.entity.InvoiceItem;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.sql.rowset.serial.SerialException;
 import java.util.List;
 
 @RestController
@@ -35,7 +37,7 @@ public class InvoiceItemController {
         try {
             InvoiceItemReponseDto responseDTO = new InvoiceItemReponseDto(invoiceItemService.getById(id).get());
             return ResponseEntity.status(200).body(responseDTO);
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ServiceException | SerialException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
@@ -45,7 +47,7 @@ public class InvoiceItemController {
         try {
 
             return ResponseEntity.ok().body(invoiceItemService.save(invoiceItemDto).toDto());
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ServiceException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
@@ -54,7 +56,7 @@ public class InvoiceItemController {
     public ResponseEntity<?> actualizarInvoiceItem(@PathVariable("id") Long id,@RequestBody InvoiceItemRequestDto invoiceItemDto){
         try {
             return ResponseEntity.ok().body(invoiceItemService.update(id,invoiceItemDto).toDto());
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ServiceException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
