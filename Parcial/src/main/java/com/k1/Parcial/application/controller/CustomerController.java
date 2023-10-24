@@ -8,6 +8,7 @@ import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.domain.service.serviceInterfaces.CustomerService;
 import com.k1.Parcial.domain.service.serviceInterfaces.EmployeService;
 import com.k1.Parcial.infrastructure.entity.Customer;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,20 +36,17 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getCustomerById(@PathVariable("id") Long id){
+    public ResponseEntity<?> getCustomerById(@PathVariable("id") @Positive Long id){
         try {
             CustomerResponseDTO responseDTO = new CustomerResponseDTO(customerService.getById(id).get());
             return ResponseEntity.status(200).body(responseDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
-        }catch (ServiceException e){
-            return ResponseEntity.status(402).body(e.getMessage());
         }
-
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCustomer(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteCustomer(@PathVariable("id") @Positive Long id){
         try {
             customerService.delete(id);
             return ResponseEntity.ok().body("Customer deleted");
@@ -66,13 +64,13 @@ public class CustomerController {
                 return ResponseEntity.status(204).body(customer.toCustomerResponseDTO());
             }
             return ResponseEntity.ok().body(customer.toCustomerResponseDTO());
-        } catch (RuntimeException | ServiceException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarCustomer(@PathVariable Long id,@RequestBody CustomerUpdateDto customerDto){
+    public ResponseEntity<?> actualizarCustomer(@PathVariable("id") @Positive Long id,@RequestBody CustomerUpdateDto customerDto){
         try {
             return ResponseEntity.ok().body(customerService.update(id,customerDto).get().toCustomerResponseDTO());
         } catch (RuntimeException e) {

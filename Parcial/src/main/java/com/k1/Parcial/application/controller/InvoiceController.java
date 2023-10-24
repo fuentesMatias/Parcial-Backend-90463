@@ -1,13 +1,11 @@
 package com.k1.Parcial.application.controller;
 
 
-import com.k1.Parcial.application.request.Customer.CustomerPostDto;
 import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
 import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
 import com.k1.Parcial.application.response.Invoice.InvoiceResponseDto;
-import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
-import com.k1.Parcial.infrastructure.entity.Invoice;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.*;
@@ -36,17 +34,17 @@ public class InvoiceController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getInvoiceById(@PathVariable("id") Long id){
+    public ResponseEntity<?> getInvoiceById(@PathVariable("id") @Positive Long id){
         try {
             InvoiceResponseDto responseDTO = new InvoiceResponseDto(invoiceService.getById(id).get());
             return ResponseEntity.status(200).body(responseDTO);
-        } catch (RuntimeException | ServiceException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @DeleteMapping("/{id}") //TODO No usar
-    public ResponseEntity<?> deleteInvoice(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteInvoice(@PathVariable("id") @Positive Long id){
         try {
             invoiceService.delete(id);
             return ResponseEntity.ok().body("Invoice deleted");
@@ -59,17 +57,15 @@ public class InvoiceController {
     public ResponseEntity<?> registrarInvoice(@RequestBody InvoicePostDto invoiceDto){
         try {
             return ResponseEntity.ok().body(invoiceService.save(invoiceDto).toDto());
-        } catch (RuntimeException | ServiceException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarInvoice(@PathVariable("id") Long id, @RequestBody InvoiceUpdateDto invoiceDto) {
+    public ResponseEntity<?> actualizarInvoice(@PathVariable("id") @Positive Long id, @RequestBody InvoiceUpdateDto invoiceDto) {
         try {
             return ResponseEntity.ok().body(invoiceService.update(id, invoiceDto).get().toDto());
-        } catch (ServiceException e) {
-            return ResponseEntity.status(400).body(e.getMessage()); // Bad Request
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage()); // Not Found
         }

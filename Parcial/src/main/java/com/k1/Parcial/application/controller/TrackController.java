@@ -5,6 +5,7 @@ import com.k1.Parcial.application.request.Track.TrackRequestDto;
 import com.k1.Parcial.application.response.Track.TrackResponseDto;
 import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
 import com.k1.Parcial.infrastructure.entity.Track;
+import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +35,7 @@ public class TrackController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getTrackById(@PathVariable("id") Long id){
+    public ResponseEntity<?> getTrackById(@PathVariable("id")@Positive Long id){
         try {
             TrackResponseDto tack = new TrackResponseDto(trackService.getById(id).get());
             return ResponseEntity.status(200).body(tack);
@@ -54,7 +55,7 @@ public class TrackController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteTrack(@PathVariable("id") Long id){
+    public ResponseEntity<?> deleteTrack(@PathVariable("id") @Positive Long id){
         try {
             trackService.delete(id);
             return ResponseEntity.ok().body("Track deleted");
@@ -64,7 +65,7 @@ public class TrackController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarTrack(@PathVariable("id") Long id,@RequestBody TrackRequestDto trackRequestDto){
+    public ResponseEntity<?> actualizarTrack(@PathVariable("id")@Positive Long id,@RequestBody TrackRequestDto trackRequestDto){
         try {
             return ResponseEntity.ok().body(trackService.update(id,trackRequestDto).get().toDto());
         } catch (RuntimeException e) {

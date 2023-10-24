@@ -35,8 +35,8 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public Optional<InvoiceItem> getById(Long id) throws ServiceException {
-        if (id == null) throw new ServiceException("El id no puede ser nulo");
+    public Optional<InvoiceItem> getById(Long id)  {
+        if (id == null) throw new RuntimeException("El id no puede ser nulo");
         return Optional.of(invoiceItemRepository.getById(id).orElseThrow());
     }
 
@@ -46,7 +46,7 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public InvoiceItem save(InvoiceItemRequestDto invoiceItemDto) throws ServiceException {
+    public InvoiceItem save(InvoiceItemRequestDto invoiceItemDto) {
 
         Track track = trackService.getById(invoiceItemDto.getTrackId()).get();
 
@@ -58,14 +58,19 @@ public class InvoiceItemServiceImpl implements InvoiceItemService {
     }
 
     @Override
-    public InvoiceItem update(Long id, InvoiceItemRequestDto invoiceItemDto) throws ServiceException {
+    public InvoiceItem update(Long id, InvoiceItemRequestDto invoiceItemDto) {
+        InvoiceItem invoiceItem;
+        Track track = null;
+        Invoice invoice = null;
+        if (invoiceItemDto.getTrackId() != 0) {
+            track = trackService.getById(invoiceItemDto.getTrackId()).get();
+        }
+        if (invoiceItemDto.getInvoiceId() != 0) {
+            invoice = invoiceService.getById(invoiceItemDto.getInvoiceId()).get();
+        }
+        invoiceItem = new InvoiceItem(invoiceItemDto, invoice,track);
 
-        Track track = trackService.getById(invoiceItemDto.getTrackId()).get();
-
-        Invoice invoice = invoiceService.getById(invoiceItemDto.getInvoiceId()).get();
-
-        InvoiceItem invoiceItem = new InvoiceItem(invoiceItemDto,invoice,track);
-
-        return invoiceItemRepository.update(id,invoiceItem).get();
+        return invoiceItemRepository.update(id, invoiceItem).get();
     }
 }
+

@@ -1,11 +1,11 @@
 package com.k1.Parcial.infrastructure.repository;
 
 import com.k1.Parcial.domain.repository.CustomerRepository;
+import com.k1.Parcial.domain.service.servicesImpl.MetodosComunes;
 import com.k1.Parcial.infrastructure.dao.DaoCustomer;
 import com.k1.Parcial.infrastructure.entity.Customer;
 import org.springframework.stereotype.Component;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,23 +39,8 @@ public class JpaCustomerRepository implements CustomerRepository {
 
 
         if (customerToUpdate.isPresent()) {
-
-            // Obtener todos los campos de la clase Customer
-            Field[] fields = customerNewData.getClass().getDeclaredFields();
-            // Recorre todos los field de la clase CustomerNewData y los setea en el customerToUpdate los que no son null
-            for (int i = 1; i < fields.length; i++) {
-                try {
-                    Field field = fields[i];
-                    field.setAccessible(true);
-                    Object value = field.get(customerNewData);
-                    if (value != null) {
-                        field.set(customerToUpdate.get(), value);
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-            daoCustomer.save(customerToUpdate.get());
+            Customer updateCustomer = MetodosComunes.noUpdateToFieldsNull(customerNewData,customerToUpdate.get());
+            daoCustomer.save(updateCustomer);
         }
 
         return customerToUpdate;

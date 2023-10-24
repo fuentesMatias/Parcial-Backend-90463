@@ -48,7 +48,7 @@ public class InvoiceServiceImplTest {
     }
 
     @Test
-    void test_getById_success() throws ServiceException {
+    void test_getById_success() {
         Invoice invoiceSimulado = new Invoice();
         invoiceSimulado.setId(1L);
         invoiceSimulado.setTotal(1000.0);
@@ -61,7 +61,7 @@ public class InvoiceServiceImplTest {
     }
 
     @Test
-    void test_getById_unsuccess_bad_id() throws ServiceException {
+    void test_getById_unsuccess_bad_id() {
         Invoice invoiceSimulado = new Invoice();
         invoiceSimulado.setId(1L);
         invoiceSimulado.setTotal(1000.0);
@@ -78,7 +78,14 @@ public class InvoiceServiceImplTest {
     }
 
     @Test
-    void test_getById_unsuccess_not_found() throws ServiceException {
+    void test_getById_id_negative() {
+        Assertions.assertThrows(RuntimeException.class, () -> {
+            invoiceServiceImpl.getById(-1L);
+        });
+    }
+
+    @Test
+    void test_getById_unsuccess_not_found() {
         Invoice invoiceSimulado = new Invoice();
         invoiceSimulado.setId(1L);
         invoiceSimulado.setTotal(1000.0);
@@ -96,13 +103,13 @@ public class InvoiceServiceImplTest {
 
     @Test
     void test_getById_throw(){
-        Assertions.assertThrows(ServiceException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             invoiceServiceImpl.getById(null);
         });
     }
 
     @Test
-    void test_save_success() throws ServiceException {
+    void test_save_success() {
         InvoicePostDto invoiceSimulado = new InvoicePostDto();
         invoiceSimulado.setTotal(1000.0);
         invoiceSimulado.setCustomerId(1L);
@@ -123,7 +130,7 @@ public class InvoiceServiceImplTest {
     }
 
     @Test
-    void test_save_unsuccess_diff() throws ServiceException {
+    void test_save_unsuccess_diff()  {
         InvoicePostDto invoiceSimulado = new InvoicePostDto();
         invoiceSimulado.setTotal(1000.0);
         invoiceSimulado.setCustomerId(1L);
@@ -150,13 +157,13 @@ public class InvoiceServiceImplTest {
 
     @Test
     void  test_save_throw(){
-        Assertions.assertThrows(ServiceException.class, () -> {
+        Assertions.assertThrows(RuntimeException.class, () -> {
             invoiceServiceImpl.save(null);
         });
     }
 
     @Test
-    void test_update_success() throws ServiceException {
+    void test_update_success() {
         InvoiceUpdateDto invoiceSimulado = new InvoiceUpdateDto();
         invoiceSimulado.setTotal(1000.0);
         invoiceSimulado.setCustomerId(1L);
@@ -176,7 +183,7 @@ public class InvoiceServiceImplTest {
     }
 
     @Test
-    void test_update_unsuccess_diff() throws ServiceException {
+    void test_update_unsuccess_diff() {
         InvoiceUpdateDto invoiceSimulado = new InvoiceUpdateDto();
         invoiceSimulado.setTotal(1000.0);
         invoiceSimulado.setCustomerId(1L);

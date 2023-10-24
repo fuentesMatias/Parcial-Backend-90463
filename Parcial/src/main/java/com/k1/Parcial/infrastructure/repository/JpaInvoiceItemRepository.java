@@ -2,6 +2,7 @@ package com.k1.Parcial.infrastructure.repository;
 
 import com.k1.Parcial.domain.repository.CustomerRepository;
 import com.k1.Parcial.domain.repository.InvoiceItemRepository;
+import com.k1.Parcial.domain.service.servicesImpl.MetodosComunes;
 import com.k1.Parcial.infrastructure.dao.DaoCustomer;
 import com.k1.Parcial.infrastructure.dao.DaoInvoiceItem;
 import com.k1.Parcial.infrastructure.entity.Customer;
@@ -40,14 +41,10 @@ public class JpaInvoiceItemRepository implements InvoiceItemRepository {
     @Override
     public Optional<InvoiceItem> update(Long id,InvoiceItem invoiceItem) {
         Optional<InvoiceItem> invoiceItemToUpdate = daoInvoiceItem.findById(id);
+
         if (invoiceItemToUpdate.isPresent()) {
-            invoiceItemToUpdate.get().setInvoice(invoiceItem.getInvoice());
-            invoiceItemToUpdate.get().setTrack(invoiceItem.getTrack());
-            invoiceItemToUpdate.get().setUnitPrice(invoiceItem.getUnitPrice());
-            invoiceItemToUpdate.get().setQuantity(invoiceItem.getQuantity());
-            daoInvoiceItem.save(invoiceItemToUpdate.get());
-        }else {
-            Throwable e = new Throwable("InvoiceItem not found");
+            InvoiceItem updateInvoiceItem = MetodosComunes.noUpdateToFieldsNull(invoiceItem,invoiceItemToUpdate.get());
+            daoInvoiceItem.save(updateInvoiceItem);
         }
         return invoiceItemToUpdate;
     }

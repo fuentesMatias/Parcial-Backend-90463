@@ -58,13 +58,20 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public Optional<Track> update(Long id, TrackRequestDto trackRequestDto) {
+        Genre genre = null;
+        MediaType mediaType = null;
+        Album album = null;
 
-        Genre genre = genreService.getById(trackRequestDto.getGenreId()).orElseThrow();
-        MediaType mediaType = mediaTypeService.getById(trackRequestDto.getMediaTypeId()).orElseThrow();
-        Album album = albumService.getById(trackRequestDto.getAlbumId()).orElseThrow();
-
-        Track track = new Track(trackRequestDto,album,genre,mediaType);
-
-        return trackRepository.update(id,track);
+        if (trackRequestDto.getGenreId() != 0) {
+            genre = genreService.getById(trackRequestDto.getGenreId()).orElseThrow();
+        }
+        if (trackRequestDto.getMediaTypeId() != 0) {
+            mediaType = mediaTypeService.getById(trackRequestDto.getMediaTypeId()).orElseThrow();
+        }
+        if (trackRequestDto.getAlbumId() != 0) {
+            album = albumService.getById(trackRequestDto.getAlbumId()).orElseThrow();
+        }
+        Track track = new Track(trackRequestDto, album, genre, mediaType);
+        return trackRepository.update(id, track);
     }
 }

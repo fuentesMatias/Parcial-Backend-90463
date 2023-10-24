@@ -33,7 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<Customer> getById(Long id) throws ServiceException {
+    public Optional<Customer> getById(Long id) throws RuntimeException {
         if (Objects.isNull(id)) throw new RuntimeException("El id no puede ser nulo");
         return Optional.of(customerRepository.getById(id).orElseThrow());
     }
@@ -47,13 +47,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public Customer save(CustomerPostDto customerDto) throws ServiceException {
+    public Customer save(CustomerPostDto customerDto) throws RuntimeException {
         try {
             Employe employe = employeService.getById(customerDto.getSupportRepId()).get();
             Customer customer = new Customer(customerDto,employe);
             return customerRepository.save(customer);
         } catch (RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
     }
 

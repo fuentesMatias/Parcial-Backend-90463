@@ -31,8 +31,8 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Optional<Invoice> getById(Long id) throws ServiceException {
-        if (id == null) throw new ServiceException("El id no puede ser nulo");
+    public Optional<Invoice> getById(Long id) {
+        if (id == null) throw new RuntimeException("El id no puede ser nulo");
         return Optional.of(invoiceRepository.getById(id).orElseThrow());
 
     }
@@ -43,24 +43,28 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice save(InvoicePostDto invoiceDto) throws ServiceException {
+    public Invoice save(InvoicePostDto invoiceDto) throws RuntimeException {
 
         try {
             Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
             Invoice invoice = new Invoice(invoiceDto,customer);
             return invoiceRepository.save(invoice);
         } catch (RuntimeException e) {
-            throw new ServiceException(e.getMessage());
+            throw new RuntimeException(e.getMessage());
         }
 
     }
 
     @Override
-    public Optional<Invoice> update(Long id, InvoiceUpdateDto invoiceDto) throws ServiceException {
-        Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
+    public Optional<Invoice> update(Long id, InvoiceUpdateDto invoiceDto) {
+        Invoice invoice;
+        if (invoiceDto.getCustomerId() == 0){
+            invoice = new Invoice(invoiceDto);
+        }else {
+            Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
 
-        Invoice invoice = new Invoice(invoiceDto,customer);
-
+            invoice = new Invoice(invoiceDto, customer);
+        }
         return invoiceRepository.update(id,invoice);
     }
 }

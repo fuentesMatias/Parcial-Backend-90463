@@ -16,7 +16,7 @@ public interface InvoiceService{
 
     void delete(Long id);
 
-    Invoice save(InvoicePostDto invoice) throws ServiceException;
+    Invoice save(InvoicePostDto invoice) throws RuntimeException;
 
-    Optional<Invoice> update(Long id, InvoiceUpdateDto invoice) throws ServiceException;
+    Optional<Invoice> update(Long id, InvoiceUpdateDto invoice);
 }

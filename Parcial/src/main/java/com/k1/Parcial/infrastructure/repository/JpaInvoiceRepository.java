@@ -1,10 +1,8 @@
 package com.k1.Parcial.infrastructure.repository;
 
-import com.k1.Parcial.domain.repository.CustomerRepository;
 import com.k1.Parcial.domain.repository.InvoiceRepository;
-import com.k1.Parcial.infrastructure.dao.DaoCustomer;
+import com.k1.Parcial.domain.service.servicesImpl.MetodosComunes;
 import com.k1.Parcial.infrastructure.dao.DaoInvoice;
-import com.k1.Parcial.infrastructure.entity.Customer;
 import com.k1.Parcial.infrastructure.entity.Invoice;
 import org.springframework.stereotype.Component;
 
@@ -36,21 +34,17 @@ public class JpaInvoiceRepository implements InvoiceRepository {
     }
 
     @Override
-    public Optional<Invoice> update(Long id,Invoice invoice) {
+    public Optional<Invoice> update(Long id, Invoice invoiceNewData) {
         Optional<Invoice> invoiceToUpdate = daoInvoice.findById(id);
+
         if (invoiceToUpdate.isPresent()) {
-            invoiceToUpdate.get().setInvoiceDate(invoice.getInvoiceDate());
-            invoiceToUpdate.get().setBillingAddress(invoice.getBillingAddress());
-            invoiceToUpdate.get().setBillingCity(invoice.getBillingCity());
-            invoiceToUpdate.get().setBillingState(invoice.getBillingState());
-            invoiceToUpdate.get().setBillingCountry(invoice.getBillingCountry());
-            invoiceToUpdate.get().setBillingPostalCode(invoice.getBillingPostalCode());
-            invoiceToUpdate.get().setTotal(invoice.getTotal());
-            invoiceToUpdate.get().setCustomer(invoice.getCustomer());
-            daoInvoice.save(invoiceToUpdate.get());
+            Invoice updatedInvoice = MetodosComunes.noUpdateToFieldsNull(invoiceNewData, invoiceToUpdate.get());
+            daoInvoice.save(updatedInvoice);
         }
+
         return invoiceToUpdate;
     }
+
 
     @Override
     public Invoice save(Invoice invoice) {

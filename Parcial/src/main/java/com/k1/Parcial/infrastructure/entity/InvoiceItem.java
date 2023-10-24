@@ -53,7 +53,25 @@ public class InvoiceItem {
                     this.unitPrice = invoiceItemRequestDto.getUnitPrice();
                     this.quantity = invoiceItemRequestDto.getQuantity();
                 }
-                public InvoiceItemReponseDto toDto(){
+
+    public InvoiceItem(InvoiceItemRequestDto invoiceItemDto) {
+        this.unitPrice = invoiceItemDto.getUnitPrice();
+        this.quantity = invoiceItemDto.getQuantity();
+    }
+
+    public InvoiceItem(InvoiceItemRequestDto invoiceItemDto, Track track) {
+        this.track = track;
+        this.unitPrice = invoiceItemDto.getUnitPrice();
+        this.quantity = invoiceItemDto.getQuantity();
+    }
+
+    public InvoiceItem(InvoiceItemRequestDto invoiceItemDto, Invoice invoice) {
+        this.invoice = invoice;
+        this.unitPrice = invoiceItemDto.getUnitPrice();
+        this.quantity = invoiceItemDto.getQuantity();
+    }
+
+    public InvoiceItemReponseDto toDto(){
                     return new InvoiceItemReponseDto(this);
                 }
 }

@@ -93,6 +93,7 @@ public class CustomerServiceImplTest {
         Mockito.verify(customerRepository).getById(12L);
     }
 
+
     @Test
     void test_getById_equal() throws ServiceException {
         Customer customerSimulado = new Customer();

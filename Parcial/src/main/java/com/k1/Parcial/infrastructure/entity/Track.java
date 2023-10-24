@@ -85,6 +85,8 @@ public class Track {
         this.bytes = trackRequestDto.getBytes();
         this.unitPrice = trackRequestDto.getUnitPrice();
     }
+
+
     public TrackResponseDto toDto(){
         return new TrackResponseDto(this);
     }

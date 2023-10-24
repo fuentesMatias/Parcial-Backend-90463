@@ -37,7 +37,7 @@ public class InvoiceItemController {
         try {
             InvoiceItemReponseDto responseDTO = new InvoiceItemReponseDto(invoiceItemService.getById(id).get());
             return ResponseEntity.status(200).body(responseDTO);
-        } catch (RuntimeException | ServiceException | SerialException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
@@ -47,7 +47,7 @@ public class InvoiceItemController {
         try {
 
             return ResponseEntity.ok().body(invoiceItemService.save(invoiceItemDto).toDto());
-        } catch (RuntimeException | ServiceException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
@@ -56,7 +56,7 @@ public class InvoiceItemController {
     public ResponseEntity<?> actualizarInvoiceItem(@PathVariable("id") Long id,@RequestBody InvoiceItemRequestDto invoiceItemDto){
         try {
             return ResponseEntity.ok().body(invoiceItemService.update(id,invoiceItemDto).toDto());
-        } catch (RuntimeException | ServiceException e) {
+        } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }

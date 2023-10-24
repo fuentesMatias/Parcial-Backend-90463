@@ -2,6 +2,7 @@ package com.k1.Parcial.infrastructure.repository;
 
 import com.k1.Parcial.domain.repository.CustomerRepository;
 import com.k1.Parcial.domain.repository.TrackRepository;
+import com.k1.Parcial.domain.service.servicesImpl.MetodosComunes;
 import com.k1.Parcial.infrastructure.dao.DaoCustomer;
 import com.k1.Parcial.infrastructure.dao.DaoTrack;
 import com.k1.Parcial.infrastructure.entity.Customer;
@@ -42,31 +43,12 @@ public class JpaTrackRepository implements TrackRepository {
 
     @Override
     public Optional<Track> update(Long id, Track trackNewData) {
+
         Optional<Track> trackToUpdate = daoTrack.findById(id);
 
         if (trackToUpdate.isPresent()) {
-            Track track = trackToUpdate.get();
-
-            //Setea el id de trackNewData para evitar problemas
-            trackNewData.setId(id);
-
-            // Obtener todos los campos de la clase Track
-            Field[] fields = trackNewData.getClass().getDeclaredFields();
-
-            // Recorre todos los campos de la clase Track y actualiza solo los no nulos
-            for (Field field : fields) {
-                try {
-                    field.setAccessible(true);
-
-                    Object value = field.get(trackNewData);
-                    if (value != null) {
-                        field.set(track, value);
-                    }
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                }
-            }
-            daoTrack.save(track);
+            Track updateTrack = MetodosComunes.noUpdateToFieldsNull(trackNewData,trackToUpdate.get());
+            daoTrack.save(updateTrack);
         }
         return trackToUpdate;
     }

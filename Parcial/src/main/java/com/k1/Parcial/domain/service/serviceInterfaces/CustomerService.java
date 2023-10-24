@@ -12,11 +12,11 @@ public interface CustomerService {
 
     List<Customer> getAll();
 
-    Optional<Customer> getById(Long id) throws ServiceException;
+    Optional<Customer> getById(Long id) throws RuntimeException;
 
     void delete(Long id);
 
-    Customer save(CustomerPostDto entity) throws ServiceException;
+    Customer save(CustomerPostDto entity) throws RuntimeException;
 
     Optional<Customer> update(Long id,CustomerUpdateDto entity);
 }

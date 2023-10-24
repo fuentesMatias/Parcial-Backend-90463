@@ -90,6 +90,18 @@ public class Invoice {
 
     }
 
+    public Invoice(InvoiceUpdateDto invoiceDto) {
+
+            this.invoiceDate = invoiceDto.getInvoiceDate();
+            this.billingAddress = invoiceDto.getBillingAddress();
+            this.billingCity = invoiceDto.getBillingCity();
+            this.billingState = invoiceDto.getBillingState();
+            this.billingCountry = invoiceDto.getBillingCountry();
+            this.billingPostalCode = invoiceDto.getBillingPostalCode();
+            this.total = invoiceDto.getTotal();
+
+    }
+
     public InvoiceResponseDto toDto(){
         return new InvoiceResponseDto(this);
     }
