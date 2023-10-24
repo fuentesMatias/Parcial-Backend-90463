@@ -2,6 +2,7 @@ package com.k1.Parcial.domain.service.serviceInterfaces;
 
 import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
 import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
+import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.infrastructure.entity.Customer;
 import com.k1.Parcial.infrastructure.entity.Invoice;
 
@@ -15,7 +16,7 @@ public interface InvoiceService{
 
     void delete(Long id);
 
-    Invoice save(InvoicePostDto invoice);
+    Invoice save(InvoicePostDto invoice) throws ServiceException;
 
-    Optional<Invoice> update(Long id, InvoiceUpdateDto invoice);
+    Optional<Invoice> update(Long id, InvoiceUpdateDto invoice) throws ServiceException;
 }

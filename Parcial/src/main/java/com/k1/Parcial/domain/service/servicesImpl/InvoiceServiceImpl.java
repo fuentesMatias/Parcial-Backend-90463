@@ -3,6 +3,7 @@ package com.k1.Parcial.domain.service.servicesImpl;
 import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
 import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
 import com.k1.Parcial.domain.repository.InvoiceRepository;
+import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.domain.service.serviceInterfaces.CustomerService;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
 import com.k1.Parcial.infrastructure.entity.Customer;
@@ -40,7 +41,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Invoice save(InvoicePostDto invoiceDto) {
+    public Invoice save(InvoicePostDto invoiceDto) throws ServiceException {
 
         Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
         Invoice invoice = new Invoice(invoiceDto,customer);
@@ -49,7 +50,7 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
-    public Optional<Invoice> update(Long id, InvoiceUpdateDto invoiceDto) {
+    public Optional<Invoice> update(Long id, InvoiceUpdateDto invoiceDto) throws ServiceException {
         Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
 
         Invoice invoice = new Invoice(invoiceDto,customer);

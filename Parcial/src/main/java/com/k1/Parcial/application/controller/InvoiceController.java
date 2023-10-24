@@ -5,6 +5,7 @@ import com.k1.Parcial.application.request.Customer.CustomerPostDto;
 import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
 import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
 import com.k1.Parcial.application.response.Invoice.InvoiceResponseDto;
+import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.domain.service.serviceInterfaces.InvoiceService;
 import com.k1.Parcial.infrastructure.entity.Invoice;
 import org.springframework.http.ResponseEntity;
@@ -58,19 +59,22 @@ public class InvoiceController {
     public ResponseEntity<?> registrarInvoice(@RequestBody InvoicePostDto invoiceDto){
         try {
             return ResponseEntity.ok().body(invoiceService.save(invoiceDto).toDto());
-        } catch (RuntimeException e) {
+        } catch (RuntimeException | ServiceException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarInvoice(@PathVariable("id") Long id,@RequestBody InvoiceUpdateDto invoiceDto){
+    public ResponseEntity<?> actualizarInvoice(@PathVariable("id") Long id, @RequestBody InvoiceUpdateDto invoiceDto) {
         try {
-            return ResponseEntity.ok().body(invoiceService.update(id,invoiceDto).get().toDto());
+            return ResponseEntity.ok().body(invoiceService.update(id, invoiceDto).get().toDto());
+        } catch (ServiceException e) {
+            return ResponseEntity.status(400).body(e.getMessage()); // Bad Request
         } catch (RuntimeException e) {
-            return ResponseEntity.status(404).body(e.getMessage());
+            return ResponseEntity.status(404).body(e.getMessage()); // Not Found
         }
     }
+
 
 
 }

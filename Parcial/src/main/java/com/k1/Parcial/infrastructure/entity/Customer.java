@@ -31,7 +31,6 @@ import lombok.NoArgsConstructor;
 //@FieldDefaults(level = AccessLevel.PRIVATE)
 @Data
 @NoArgsConstructor
-
 public class Customer {
 
             @Id

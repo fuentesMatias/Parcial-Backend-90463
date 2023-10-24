@@ -4,6 +4,7 @@ package com.k1.Parcial.application.controller;
 import com.k1.Parcial.application.request.Customer.CustomerPostDto;
 import com.k1.Parcial.application.request.Customer.CustomerUpdateDto;
 import com.k1.Parcial.application.response.Customer.CustomerResponseDTO;
+import com.k1.Parcial.domain.service.ServiceException;
 import com.k1.Parcial.domain.service.serviceInterfaces.CustomerService;
 import com.k1.Parcial.domain.service.serviceInterfaces.EmployeService;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,10 @@ public class CustomerController {
             return ResponseEntity.status(200).body(responseDTO);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
+        }catch (ServiceException e){
+            return ResponseEntity.status(402).body(e.getMessage());
         }
+
     }
 
         @DeleteMapping("/{id}")
