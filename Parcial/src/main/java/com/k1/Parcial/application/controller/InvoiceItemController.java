@@ -50,20 +50,20 @@ public class InvoiceItemController {
         }
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteInvoiceItem(@PathVariable("id") Long id){
+    @PutMapping("/{id}")
+    public ResponseEntity<?> actualizarInvoiceItem(@PathVariable("id") Long id,@RequestBody InvoiceItemRequestDto invoiceItemDto){
         try {
-            invoiceItemService.delete(id);
-            return ResponseEntity.ok().body("InvoiceItem deleted");
+            return ResponseEntity.ok().body(invoiceItemService.update(id,invoiceItemDto).toDto());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarInvoiceItem(@PathVariable("id") Long id,@RequestBody InvoiceItemRequestDto invoiceItemDto){
+    @DeleteMapping
+    public ResponseEntity<?> deleteInvoiceItem(@PathVariable("id") Long id){
         try {
-            return ResponseEntity.ok().body(invoiceItemService.update(id,invoiceItemDto).toDto());
+            invoiceItemService.delete(id);
+            return ResponseEntity.ok().body("InvoiceItem deleted");
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

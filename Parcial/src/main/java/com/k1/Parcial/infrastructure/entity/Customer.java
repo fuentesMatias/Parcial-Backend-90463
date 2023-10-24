@@ -21,6 +21,7 @@ package com.k1.Parcial.infrastructure.entity;
 
 import com.k1.Parcial.application.request.Customer.CustomerPostDto;
 import com.k1.Parcial.application.request.Customer.CustomerUpdateDto;
+import com.k1.Parcial.application.response.Customer.CustomerResponseDTO;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -107,5 +108,9 @@ public class Customer {
         this.fax = entity.getFax();
         this.email = entity.getEmail();
         this.supportRepId = employe;
+    }
+
+    public CustomerResponseDTO toCustomerResponseDTO() {
+        return new CustomerResponseDTO(this);
     }
 }

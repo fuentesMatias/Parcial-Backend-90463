@@ -47,7 +47,7 @@ public class TrackController {
     public ResponseEntity<?> registrarTrack(@RequestBody TrackRequestDto trackRequestDto){
         try {
 
-            return ResponseEntity.ok().body(trackService.save(trackRequestDto));
+            return ResponseEntity.ok().body(trackService.save(trackRequestDto).toDto());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

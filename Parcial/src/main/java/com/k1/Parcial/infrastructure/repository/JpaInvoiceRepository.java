@@ -39,7 +39,6 @@ public class JpaInvoiceRepository implements InvoiceRepository {
     public Optional<Invoice> update(Long id,Invoice invoice) {
         Optional<Invoice> invoiceToUpdate = daoInvoice.findById(id);
         if (invoiceToUpdate.isPresent()) {
-            invoiceToUpdate.get().setTotal(invoice.getTotal());
             invoiceToUpdate.get().setInvoiceDate(invoice.getInvoiceDate());
             invoiceToUpdate.get().setBillingAddress(invoice.getBillingAddress());
             invoiceToUpdate.get().setBillingCity(invoice.getBillingCity());

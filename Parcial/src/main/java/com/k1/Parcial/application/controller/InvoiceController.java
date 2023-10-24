@@ -20,6 +20,7 @@ public class InvoiceController {
     private final InvoiceService invoiceService;
 
     public InvoiceController(InvoiceService invoiceService) {
+
         this.invoiceService = invoiceService;
     }
 
@@ -56,7 +57,7 @@ public class InvoiceController {
     @PostMapping
     public ResponseEntity<?> registrarInvoice(@RequestBody InvoicePostDto invoiceDto){
         try {
-            return ResponseEntity.ok().body(invoiceService.save(invoiceDto));
+            return ResponseEntity.ok().body(invoiceService.save(invoiceDto).toDto());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -65,7 +66,7 @@ public class InvoiceController {
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarInvoice(@PathVariable("id") Long id,@RequestBody InvoiceUpdateDto invoiceDto){
         try {
-            return ResponseEntity.ok().body(invoiceService.update(id,invoiceDto).get());
+            return ResponseEntity.ok().body(invoiceService.update(id,invoiceDto).get().toDto());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

@@ -50,7 +50,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
     @Override
     public Optional<Invoice> update(Long id, InvoiceUpdateDto invoiceDto) {
-        Customer customer = customerService.getById(id).get();
+        Customer customer = customerService.getById(invoiceDto.getCustomerId()).get();
 
         Invoice invoice = new Invoice(invoiceDto,customer);
 

@@ -43,7 +43,6 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer save(CustomerPostDto customerDto) {
 
         Employe employe = employeService.getById(customerDto.getSupportRepId()).get();
-
         Customer customer = new Customer(customerDto,employe);
         return customerRepository.save(customer);
     }

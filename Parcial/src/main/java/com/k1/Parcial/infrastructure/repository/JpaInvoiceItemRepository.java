@@ -46,6 +46,8 @@ public class JpaInvoiceItemRepository implements InvoiceItemRepository {
             invoiceItemToUpdate.get().setUnitPrice(invoiceItem.getUnitPrice());
             invoiceItemToUpdate.get().setQuantity(invoiceItem.getQuantity());
             daoInvoiceItem.save(invoiceItemToUpdate.get());
+        }else {
+            Throwable e = new Throwable("InvoiceItem not found");
         }
         return invoiceItemToUpdate;
     }

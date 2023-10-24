@@ -58,6 +58,7 @@ public class PlaylistServiceImpl implements PlaylistService {
     public Playlist addTrackToPlaylist(Long idPlaylist, Long idTrack) {
         Track track = trackService.getById(idTrack).orElseThrow();
         Playlist playlist = playlistRepository.getById(idPlaylist).orElseThrow();
-        return  playlist.addTrack(track);
+        playlist.addTrack(track);
+        return playlistRepository.update(idPlaylist,playlist).orElseThrow();
     }
 }

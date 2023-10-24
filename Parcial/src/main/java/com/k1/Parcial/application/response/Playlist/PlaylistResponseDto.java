@@ -18,9 +18,10 @@ public class PlaylistResponseDto {
         this.id = playlist.getId();
         this.name = playlist.getName();
         // Utiliza streams para extraer los IDs de los tracks y construir una lista de Long
-        this.tracks = playlist.getTracks().stream()
-                .map(com.k1.Parcial.infrastructure.entity.Track::getName)
-                .toList();
-
+        if (playlist.getTracks() != null) {
+            this.tracks = playlist.getTracks().stream()
+                    .map(com.k1.Parcial.infrastructure.entity.Track::getName)
+                    .toList();
+        }
     }
 }

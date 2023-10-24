@@ -32,9 +32,11 @@ public class TrackResponseDto {
         this.milliseconds = track.getMilliseconds();
         this.bytes = track.getBytes();
         this.unitPrice = track.getUnitPrice();
-        this.playlists = track.getPlaylists().stream()
-                .map(Playlist::getName)
-                .toList();
+        if (track.getPlaylists() != null) {
+            this.playlists = track.getPlaylists().stream()
+                    .map(Playlist::getName)
+                    .toList();
+        }
     }
 
 }

@@ -42,7 +42,7 @@ public class CustomerController {
         }
     }
 
-        @DeleteMapping("/{id}") //TODO No usar
+        @DeleteMapping("/{id}")
         public ResponseEntity<?> deleteCustomer(@PathVariable("id") Long id){
             try {
                 customerService.delete(id);
@@ -55,9 +55,7 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<?> registrarCustomer(@RequestBody CustomerPostDto customerDto){
         try {
-//            Employe employe = employeService.getById(customerDto.getSupportRepId()).get();
-//            Customer customer = new Customer(customerDto,employe);
-            return ResponseEntity.ok().body(customerService.save(customerDto));
+            return ResponseEntity.ok().body(customerService.save(customerDto).toCustomerResponseDTO());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }
@@ -67,7 +65,7 @@ public class CustomerController {
     public ResponseEntity<?> actualizarCustomer(@PathVariable Long id,@RequestBody CustomerUpdateDto customerDto){
         try {
 
-            return ResponseEntity.ok().body(customerService.update(id,customerDto));
+            return ResponseEntity.ok().body(customerService.update(id,customerDto).get().toCustomerResponseDTO());
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
         }

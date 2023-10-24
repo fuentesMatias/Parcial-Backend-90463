@@ -16,6 +16,7 @@ package com.k1.Parcial.infrastructure.entity;
 
 import com.k1.Parcial.application.request.Invoice.InvoicePostDto;
 import com.k1.Parcial.application.request.Invoice.InvoiceUpdateDto;
+import com.k1.Parcial.application.response.Invoice.InvoiceResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -87,5 +88,9 @@ public class Invoice {
         this.total = invoiceDto.getTotal();
         this.customer = customer;
 
+    }
+
+    public InvoiceResponseDto toDto(){
+        return new InvoiceResponseDto(this);
     }
 }
