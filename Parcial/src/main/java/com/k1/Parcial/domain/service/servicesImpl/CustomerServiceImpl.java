@@ -28,6 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
     @Override
     public List<Customer> getAll() {
+
         return customerRepository.getAll();
     }
 
@@ -45,15 +46,19 @@ public class CustomerServiceImpl implements CustomerService {
     public void delete(Long id) {
         if (Objects.isNull(id)) throw new RuntimeException("El id no puede ser nulo");
         customerRepository.delete(id);
+
     }
 
 
     @Override
-    public Customer save(CustomerPostDto customerDto) {
-
-        Employe employe = employeService.getById(customerDto.getSupportRepId()).get();
-        Customer customer = new Customer(customerDto,employe);
-        return customerRepository.save(customer);
+    public Customer save(CustomerPostDto customerDto) throws ServiceException {
+        try {
+            Employe employe = employeService.getById(customerDto.getSupportRepId()).get();
+            Customer customer = new Customer(customerDto,employe);
+            return customerRepository.save(customer);
+        } catch (RuntimeException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 
     @Override

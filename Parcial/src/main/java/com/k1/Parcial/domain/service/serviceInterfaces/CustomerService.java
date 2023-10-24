@@ -16,7 +16,7 @@ public interface CustomerService {
 
     void delete(Long id);
 
-    Customer save(CustomerPostDto entity);
+    Customer save(CustomerPostDto entity) throws ServiceException;
 
     Optional<Customer> update(Long id,CustomerUpdateDto entity);
 }
