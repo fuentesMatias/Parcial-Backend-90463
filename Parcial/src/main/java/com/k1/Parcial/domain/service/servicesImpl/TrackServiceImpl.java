@@ -3,10 +3,7 @@ package com.k1.Parcial.domain.service.servicesImpl;
 
 import com.k1.Parcial.application.request.Track.TrackRequestDto;
 import com.k1.Parcial.domain.repository.TrackRepository;
-import com.k1.Parcial.domain.service.serviceInterfaces.AlbumService;
-import com.k1.Parcial.domain.service.serviceInterfaces.GenreService;
-import com.k1.Parcial.domain.service.serviceInterfaces.MediaTypesService;
-import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
+import com.k1.Parcial.domain.service.serviceInterfaces.*;
 import com.k1.Parcial.infrastructure.entity.Album;
 import com.k1.Parcial.infrastructure.entity.Genre;
 import com.k1.Parcial.infrastructure.entity.MediaType;
@@ -25,12 +22,15 @@ public class TrackServiceImpl implements TrackService {
     private final GenreService genreService;
     private final MediaTypesService mediaTypeService;
 
+    private final ArtistsService artistsService;
 
-    public TrackServiceImpl(TrackRepository trackRepository, AlbumService albumService, GenreService genreService, MediaTypesService mediaTypeService) {
+
+    public TrackServiceImpl(TrackRepository trackRepository, AlbumService albumService, GenreService genreService, MediaTypesService mediaTypeService, ArtistsService artistsService) {
         this.trackRepository = trackRepository;
         this.albumService = albumService;
         this.genreService = genreService;
         this.mediaTypeService = mediaTypeService;
+        this.artistsService = artistsService;
     }
 
     @Override
@@ -54,7 +54,10 @@ public class TrackServiceImpl implements TrackService {
 
     @Override
     public List<Track> getTracksByArtistAndGenre(Long artistId, Long genreId) {
-        //Genre genre = genreService.getById(genreId).orElseThrow();
+
+
+        artistsService.getById(artistId).orElseThrow(()->
+                new RuntimeException("No existe el artista con id: "+artistId));
 
         List<Track> tracksfiltrados = new ArrayList<>();
 

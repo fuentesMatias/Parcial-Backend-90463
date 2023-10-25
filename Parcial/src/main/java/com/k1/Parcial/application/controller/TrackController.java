@@ -87,6 +87,9 @@ public class TrackController {
                     .stream()
                     .map(TrackResponseByArtistDto::new)
                     .toList();
+            if (tracks.isEmpty()){
+                return ResponseEntity.status(204).body("No se encontraron tracks con los parametros ingresados");
+            }
             return ResponseEntity.ok().body(tracks);
         } catch (RuntimeException e) {
             return ResponseEntity.status(404).body(e.getMessage());
