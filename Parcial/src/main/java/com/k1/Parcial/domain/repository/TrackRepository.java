@@ -19,4 +19,5 @@ public interface TrackRepository {
     Track save(Track track);
 
 
+    List<Track> getTrackByAlbumIdAndGenreId(long artist, long genre);
 }

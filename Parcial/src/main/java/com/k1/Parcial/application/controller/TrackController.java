@@ -2,9 +2,9 @@ package com.k1.Parcial.application.controller;
 
 
 import com.k1.Parcial.application.request.Track.TrackRequestDto;
+import com.k1.Parcial.application.response.Track.TrackResponseByArtistDto;
 import com.k1.Parcial.application.response.Track.TrackResponseDto;
 import com.k1.Parcial.domain.service.serviceInterfaces.TrackService;
-import com.k1.Parcial.infrastructure.entity.Track;
 import jakarta.validation.constraints.Positive;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -72,4 +72,27 @@ public class TrackController {
             return ResponseEntity.status(404).body(e.getMessage());
         }
     }
+
+    /*
+        Obtener todos los Tracks (Pistas o Canciones) dados un Artista y Un Id de género específicos (URL
+    sugerida: GET:/api/tracks?artistid=<id de artista>&genreid=<id de género>). Para ello deberá
+    buscar todos los tracks de todos los álbumes del artista indicado para componer una colección. El
+    resultado debe informar: TrackId, tracks.Name, álbum.Title, artist.Name, miliseconds de cada
+    uno de los tracks retornados (se sugiere crear un dto con esta estructura).
+         */
+    @GetMapping(params = {"artistid","genreid"})
+    public ResponseEntity<?> getTracksByArtistAndGenre(@RequestParam("artistid") @Positive Long artistId,@RequestParam("genreid") @Positive Long genreId){
+        try {
+            List<TrackResponseByArtistDto> tracks = trackService.getTracksByArtistAndGenre(artistId,genreId)
+                    .stream()
+                    .map(TrackResponseByArtistDto::new)
+                    .toList();
+            return ResponseEntity.ok().body(tracks);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(e.getMessage());
+        }
+    }
+
+
+
 }

@@ -25,4 +25,9 @@ public class AlbumServiceImp implements AlbumService {
     public Optional<Album> getById(Long id) {
         return Optional.of(albumRepository.getById(id).orElseThrow());
     }
+
+    @Override
+    public List<Album> getAllByArtistId(Long artistId) {
+        return albumRepository.getAllByArtistId(artistId);
+    }
 }

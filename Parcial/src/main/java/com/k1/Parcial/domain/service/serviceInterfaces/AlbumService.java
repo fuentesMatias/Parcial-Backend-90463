@@ -10,4 +10,5 @@ public interface AlbumService {
 
     Optional<Album> getById(Long id);
 
+    List<Album> getAllByArtistId(Long artistId);
 }

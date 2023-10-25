@@ -15,4 +15,6 @@ public interface TrackService {
 
     Optional<Track> update(Long id, TrackRequestDto entity);
     Track save(TrackRequestDto entity);
+
+    List<Track> getTracksByArtistAndGenre(Long artistId, Long genreId);
 }

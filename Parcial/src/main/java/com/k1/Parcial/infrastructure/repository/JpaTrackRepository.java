@@ -58,4 +58,10 @@ public class JpaTrackRepository implements TrackRepository {
     public Track save(Track track) {
         return daoTrack.save(track);
     }
+
+    @Override
+    public List<Track> getTrackByAlbumIdAndGenreId(long albumId, long genreId) {
+        //daoTrack.findByAlbumIdAndGenreId(albumId,genreId);
+        return daoTrack.findByAlbumIdAndGenreId(albumId,genreId);
+    }
 }

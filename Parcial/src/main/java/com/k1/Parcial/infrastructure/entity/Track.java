@@ -23,6 +23,7 @@ CREATE TABLE "tracks"
 
 
 import com.k1.Parcial.application.request.Track.TrackRequestDto;
+import com.k1.Parcial.application.response.Track.TrackResponseByArtistDto;
 import com.k1.Parcial.application.response.Track.TrackResponseDto;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -89,5 +90,9 @@ public class Track {
 
     public TrackResponseDto toDto(){
         return new TrackResponseDto(this);
+    }
+
+    public TrackResponseByArtistDto toDtoByArtist(){
+        return new TrackResponseByArtistDto(this);
     }
 }

@@ -57,8 +57,11 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public Playlist addTrackToPlaylist(Long idPlaylist, Long idTrack) {
         Track track = trackService.getById(idTrack).orElseThrow();
+
         Playlist playlist = playlistRepository.getById(idPlaylist).orElseThrow();
+
         playlist.addTrack(track);
+
         return playlistRepository.update(idPlaylist,playlist).orElseThrow();
     }
 }

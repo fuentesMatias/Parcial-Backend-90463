@@ -13,6 +13,7 @@ import com.k1.Parcial.infrastructure.entity.MediaType;
 import com.k1.Parcial.infrastructure.entity.Track;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,21 @@ public class TrackServiceImpl implements TrackService {
         Album album = albumService.getById(entity.getAlbumId()).orElseThrow();
         Track track = new Track(entity,album,genre,mediaType);
         return trackRepository.save(track);
+    }
+
+    @Override
+    public List<Track> getTracksByArtistAndGenre(Long artistId, Long genreId) {
+        //Genre genre = genreService.getById(genreId).orElseThrow();
+
+        List<Track> tracksfiltrados = new ArrayList<>();
+
+        List<Album> album = albumService.getAllByArtistId(artistId);
+
+        for (Album album1 : album) {
+            List<Track> tracks = trackRepository.getTrackByAlbumIdAndGenreId(album1.getId(), genreId);
+            tracksfiltrados.addAll(tracks);
+        }
+        return tracksfiltrados;
     }
 
     @Override
